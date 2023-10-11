@@ -1,11 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const bodyParser = require('body-parser');
+const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const jwt = require('jsonwebtoken');
 const secretKey = 'TicketMaster';
 const nodemailer = require('nodemailer');
+const { Signup, Movie, BookedTicket, MovieReview } = require('../model/schema');
 
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
@@ -13,13 +15,33 @@ router.use(express.urlencoded({ extended: true }));
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
-const multer = require('multer');
-const storage = multer.memoryStorage();
-
-const upload = multer({ storage: storage });
-
-
-const { Signup, Movie, BookedTicket, MovieReview } = require('../model/schema');
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, directory)
+    },
+    filename: (req, file, cb) => {
+        const filename = file.originalname.toLowerCase().split(' ').join('-')
+        cb(null, filename)
+    }
+})
+var upload = multer({
+    storage: storage,
+    limits: {
+        fileSize: 1024 * 1024 * 10,
+    },
+    fileFilter: (req, file, cb) => {
+        if (
+            file.mimetype == 'image/png' ||
+            file.mimetype == 'image/jpg' ||
+            file.mimetype == 'image/jpeg'
+        ) {
+            cb(null, true)
+        } else {
+            cb(null, false)
+            return cb(new Error('Only .png, .jpg and .jpeg format allowed!'))
+        }
+    }
+})
 
 function verifytoken(req, res, next) {
     try {
