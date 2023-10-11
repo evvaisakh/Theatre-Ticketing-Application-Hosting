@@ -14,7 +14,7 @@ const PORT = 3000;
 const path = require('path');
 
 const api = require('./routes/router');
-app.use('/api', api);
+app.use('/ticketMaster', api);
 
 const db = require('./db/connection');
 require('dotenv').config();
