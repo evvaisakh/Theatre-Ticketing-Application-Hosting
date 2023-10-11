@@ -11,6 +11,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 const PORT = 3000;
+const path = require('path');
 
 const api = require('./routes/router');
 app.use('/api', api);
