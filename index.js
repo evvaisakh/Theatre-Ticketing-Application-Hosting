@@ -13,14 +13,14 @@ app.use(express.urlencoded({ extended: true }));
 const PORT = 3000;
 
 const api = require('./routes/router');
-app.use('/', api);
+app.use('/api', api);
 
 const db = require('./db/connection');
 require('dotenv').config();
 
 app.use(express.static(path.join(__dirname, 'frontend')));
 
-app.get('*', async(req, res)=>{
+app.get('*', async (req, res) => {
     res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
 });
 
