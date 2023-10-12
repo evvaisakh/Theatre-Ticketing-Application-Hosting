@@ -120,7 +120,7 @@ const movieReviewSchema = mongoose.Schema({
 const TicketMaster = mongoose.connection.useDb('TicketMaster');
 
 const Signup = TicketMaster.model('TicketMaster', signupSchema);
-const Movie = TicketMaster.model('movies', movieSchema);
-const BookedTicket = TicketMaster.model('bookings', bookedTicketSchema);
-const MovieReview = TicketMaster.model('reviews', movieReviewSchema);
+const Movie = TicketMaster.model('movie', movieSchema);
+const BookedTicket = TicketMaster.model('booking', bookedTicketSchema);
+const MovieReview = TicketMaster.model('review', movieReviewSchema);
 module.exports = { Signup, Movie, BookedTicket, MovieReview };
