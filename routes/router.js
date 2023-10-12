@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const bodyParser = require('body-parser');
-const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const jwt = require('jsonwebtoken');
@@ -15,33 +14,10 @@ router.use(express.urlencoded({ extended: true }));
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, directory)
-    },
-    filename: (req, file, cb) => {
-        const filename = file.originalname.toLowerCase().split(' ').join('-')
-        cb(null, filename)
-    }
-})
-var upload = multer({
-    storage: storage,
-    limits: {
-        fileSize: 1024 * 1024 * 10,
-    },
-    fileFilter: (req, file, cb) => {
-        if (
-            file.mimetype == 'image/png' ||
-            file.mimetype == 'image/jpg' ||
-            file.mimetype == 'image/jpeg'
-        ) {
-            cb(null, true)
-        } else {
-            cb(null, false)
-            return cb(new Error('Only .png, .jpg and .jpeg format allowed!'))
-        }
-    }
-})
+const multer = require('multer');
+const storage = multer.memoryStorage();
+
+const upload=multer({storage:storage});
 
 function verifytoken(req, res, next) {
     try {
